@@ -3,7 +3,5 @@
 .vscode
 .cache
 *.iml
-.env
-private.rs
 config.toml
 *.bkp

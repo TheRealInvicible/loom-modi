@@ -669,18 +669,38 @@ impl<
     }
 
     pub fn get_client(&self, name: Option<&String>) -> Result<RootProvider> {
-        match self.clients.get(name.unwrap_or(&"local".to_string())) {
+        let key: String = name.cloned().unwrap_or_else(|| "remote".to_string());
+    
+        match self.clients.get(&key) {
             Some(a) => Ok(a.clone()),
-            None => Err(eyre!("CLIENT_NOT_FOUND")),
+            None => {
+                println!("Client '{}' not found. Falling back to 'remote'", key);
+                println!("Available clients at fallback: {:?}", self.clients.keys());
+                match self.clients.get("remote") {
+                    Some(a) => Ok(a.clone()),
+                    None => {
+                        println!("Available clients: {:?}", self.clients.keys());
+                        Err(eyre!("CLIENT_NOT_FOUND"))
+                    }
+                }
+            }
         }
     }
+    
+    
 
     pub fn get_client_config(&self, name: Option<&String>) -> Result<ClientConfig> {
-        match self.config.clients.get(name.unwrap_or(&"local".to_string())) {
+        let key = name.map(|s| s.as_str()).unwrap_or("remote");
+
+        match self.config.clients.get(key) {
             Some(a) => Ok(a.clone()),
-            None => Err(eyre!("CLIENT_NOT_FOUND")),
+                None => {
+                    println!("Client '{}' not found. Falling back to 'remote'", key);println!("Available config clients: {:?}", self.config.clients.keys());
+                    Err(eyre!("CLIENT_NOT_FOUND"))
+                }
         }
     }
+    
 
     pub fn get_blockchain(&self, name: Option<&String>) -> Result<&Blockchain> {
         match self.blockchains.get(name.unwrap_or(&self.default_blockchain_name.clone().unwrap())) {

@@ -245,12 +245,12 @@ async fn collect_stat_task(
 
     let mut blocks_counter: usize = 0;
 
-    let mut block_header_subscription = bc.new_block_headers_channel().subscribe().await;
-    let mut block_with_tx_subscription = bc.new_block_with_tx_channel().subscribe().await;
-    let mut block_logs_subscription = bc.new_block_logs_channel().subscribe().await;
-    let mut block_state_subscription = bc.new_block_state_update_channel().subscribe().await;
+    let mut block_header_subscription = bc.new_block_headers_channel().subscribe();
+    let mut block_with_tx_subscription = bc.new_block_with_tx_channel().subscribe();
+    let mut block_logs_subscription = bc.new_block_logs_channel().subscribe();
+    let mut block_state_subscription = bc.new_block_state_update_channel().subscribe();
 
-    let mut pending_tx_subscription = bc.mempool_events_channel().subscribe().await;
+    let mut pending_tx_subscription = bc.mempool_events_channel().subscribe();
 
     loop {
         select! {

@@ -15,7 +15,7 @@ arb_mempool = true
 flashbots = false
 
 [pools]
-a = { address = "0x2dd35b4da6534230ff53048f7477f17f7f4e7a70", class = "uniswap3" }
+a = { address = "0x2dd35b4da6534230ff53048f7477f17f7f4e7a70", class = "uniswap2" }
 
 [txs]
 tx_1 = { hash = "0xf9fb98fe76dc5f4e836cdc3d80cd7902150a8609c617064f1447c3980fd6776b", send = "mempool" }

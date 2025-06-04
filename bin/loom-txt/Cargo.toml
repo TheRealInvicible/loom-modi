@@ -1,0 +1,22 @@
+[package]
+name = "loom-txt"
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+loom = { workspace = true, features = ["full-json-rpc", "strategy-full"] }
+
+env_logger.workspace = true
+eyre.workspace = true
+futures.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+dotenv = "0.15"
+
+alloy.workspace = true
+alloy-primitives.workspace = true

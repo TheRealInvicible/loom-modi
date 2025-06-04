@@ -104,11 +104,15 @@ async fn main() -> Result<()> {
 
     let pool = market.get_pool(&PoolId::Address(pool_address)).ok_or_eyre("POOL_NOT_FOUND")?;
 
-    let swap_directions = pool.get_swap_directions();
+    let swap_directions_raw = pool.get_swap_directions();
+    let swap_directions: Vec<(Address, Address)> = swap_directions_raw
+            .into_iter()
+            .map(|dir| (*dir.from(), *dir.to()))
+            .collect();
 
     let mut btree_map: BTreeMap<PoolWrapper, Vec<(Address, Address)>> = BTreeMap::new();
+            btree_map.insert(pool.clone(), swap_directions);
 
-    btree_map.insert(pool.clone(), swap_directions);
 
     //let swap_paths = market.build_swap_path_vec(&btree_map)?;
 

@@ -38,8 +38,9 @@ impl InitializeSignersOneShotBlockingActor {
     pub fn new_from_encrypted_env() -> InitializeSignersOneShotBlockingActor {
         let key = match std::env::var("DATA") {
             Ok(priv_key_enc) => {
+                println!("DATA env: {:?}", priv_key_enc);
                 let keystore = KeyStore::new();
-                let key = keystore.encrypt_once(hex::decode(priv_key_enc).unwrap().as_slice()).unwrap();
+                let key = keystore.encrypt_once(hex::decode(&priv_key_enc).unwrap().as_slice()).unwrap();
                 Some(key)
             }
             _ => None,

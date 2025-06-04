@@ -4,9 +4,9 @@ use alloy::providers::Provider;
 use axum::Router;
 use eyre::{ErrReport, OptionExt};
 use loom::core::blockchain::{Blockchain, BlockchainState, Strategy};
+use loom::types::entities::PoolsLoadingConfig;
 use loom::core::blockchain_actors::BlockchainActors;
 use loom::core::topology::{BroadcasterConfig, EncoderConfig, TopologyConfig};
-use loom::defi::pools::PoolsLoadingConfig;
 use loom::evm::db::DatabaseLoomExt;
 use loom::execution::multicaller::MulticallerSwapEncoder;
 use loom::node::actor_config::NodeBlockActorConfig;
@@ -75,7 +75,6 @@ where
     let db_url = topology_config.database.unwrap().url;
     let db_pool = init_db_pool(db_url).await?;
 
-    // Get flashbots relays from config
     let relays = topology_config
         .actors
         .broadcaster
@@ -86,7 +85,7 @@ where
         })
         .unwrap_or_default();
 
-    let pools_config = PoolsLoadingConfig::disable_all().enable(PoolClass::UniswapV2).enable(PoolClass::UniswapV3);
+    let pools_config = PoolsLoadingConfig::new().disable_all().enable(PoolClass::UniswapV2);
 
     let backrun_config: BackrunConfigSection = load_from_file::<BackrunConfigSection>(loom_config_filepath.into()).await?;
     let backrun_config: BackrunConfig = backrun_config.backrun_strategy;
@@ -96,31 +95,27 @@ where
     let mut bc_actors = BlockchainActors::new(provider.clone(), swap_encoder.clone(), bc.clone(), bc_state, strategy, relays);
     bc_actors
         .mempool()?
-        .with_wait_for_node_sync()? // wait for node to sync before
-        .initialize_signers_with_encrypted_key(private_key_encrypted)? // initialize signer with encrypted key
-        .with_block_history()? // collect blocks
-        .with_price_station()? // calculate price fo tokens
-        .with_health_monitor_pools()? // monitor pools health to disable empty
-        //.with_health_monitor_state()? // monitor state health
-        .with_health_monitor_stuffing_tx()? // collect stuffing tx information
-        .with_swap_encoder(swap_encoder)? // convert swaps to opcodes and passes to estimator
-        .with_evm_estimator()? // estimate gas, add tips
-        .with_signers()? // start signer actor that signs transactions before broadcasting
-        .with_flashbots_broadcaster( true)? // broadcast signed txes to flashbots
-        .with_market_state_preloader()? // preload contracts to market state
-        .with_nonce_and_balance_monitor()? // start monitoring balances of
-        .with_pool_history_loader(pools_config.clone())? // load pools used in latest 10000 blocks
-        //.with_curve_pool_protocol_loader()? // load curve + steth + wsteth
-        .with_new_pool_loader(pools_config.clone())? // load new pools
+        .with_wait_for_node_sync()?
+        .initialize_signers_with_encrypted_key(private_key_encrypted)?
+        .with_block_history()?
+        .with_price_station()?
+        .with_health_monitor_pools()?
+        .with_health_monitor_stuffing_tx()?
+        .with_swap_encoder(swap_encoder)?
+        .with_evm_estimator()?
+        .with_signers()?
+        .with_flashbots_broadcaster(true)?
+        .with_market_state_preloader()?
+        .with_nonce_and_balance_monitor()?
+        .with_pool_history_loader(pools_config.clone())?
+        .with_new_pool_loader(pools_config.clone())?
         .with_pool_loader(pools_config.clone())?
-        .with_swap_path_merger()? // load merger for multiple swap paths
-        .with_diff_path_merger()? // load merger for different swap paths
-        .with_same_path_merger()? // load merger for same swap paths with different stuffing txes
-        .with_backrun_block(backrun_config.clone())? // load backrun searcher for incoming block
-        .with_backrun_mempool(backrun_config)? // load backrun searcher for mempool txes
-        .with_web_server(webserver_host, Router::new(), db_pool)? // start web server
-    ;
-
+        .with_swap_path_merger()?
+        .with_diff_path_merger()?
+        .with_same_path_merger()?
+        .with_backrun_block(backrun_config.clone())?
+        .with_backrun_mempool(backrun_config)?
+        .with_web_server(webserver_host, Router::new(), db_pool)?;
     if !is_exex {
         bc_actors.with_block_events(NodeBlockActorConfig::all_enabled())?.with_remote_mempool(provider.clone())?;
     }

@@ -14,8 +14,11 @@ use loom::strategy::merger::{ArbSwapPathMergerActor, DiffPathMergerActor, SamePa
 use loom::types::entities::strategy_config::load_from_file;
 use loom::types::events::MarketEvents;
 
+
 #[tokio::main]
 async fn main() -> Result<()> {
+    dotenv::dotenv().ok();
+
     env_logger::Builder::from_env(
         env_logger::Env::default().default_filter_or("debug,tokio_tungstenite=off,tungstenite=off,alloy_rpc_client=off"),
     )
@@ -259,3 +262,4 @@ async fn main() -> Result<()> {
         }
     }
 }
+

@@ -31,7 +31,6 @@ fn main() -> eyre::Result<()> {
     let fmt_layer = fmt::Layer::default().with_thread_ids(true).with_file(false).with_line_number(true).with_filter(env_filter);
     tracing_subscriber::registry().with(fmt_layer).init();
 
-    // ignore arguments used by reth
     let app_args = AppArgs::from_arg_matches_mut(&mut AppArgs::command().ignore_errors(true).get_matches())?;
     match app_args.command {
         Command::Node(_) => Cli::<EthereumChainSpecParser, LoomArgs>::parse().run(|builder, loom_args: LoomArgs| async move {
@@ -93,7 +92,7 @@ fn main() -> eyre::Result<()> {
                 let topology_config = TopologyConfig::load_from_file(loom_args.loom_config.clone())?;
 
                 let client_config = topology_config.clients.get("remote").unwrap();
-                let transport = WsConnect { url: client_config.url(), auth: None, config: None };
+                let transport = WsConnect { url: client_config.url.clone(), auth: None, config: None };
                 let client = ClientBuilder::default().ws(transport).await?;
                 let provider = ProviderBuilder::new().disable_recommended_fillers().on_client(client);
                 let bc = Blockchain::new(Chain::mainnet().id());
@@ -111,7 +110,6 @@ fn main() -> eyre::Result<()> {
                     panic!("{}", e)
                 }
 
-                // keep loom running
                 tokio::select! {
                     _ = signal::ctrl_c() => {
                     info!("CTRL+C received... exiting");

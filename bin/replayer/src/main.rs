@@ -105,10 +105,10 @@ async fn main() -> Result<()> {
     tokio::task::spawn(bc_actors.wait());
     let compose_channel = strategy.swap_compose_channel();
 
-    let mut header_sub = bc.new_block_headers_channel().subscribe().await;
-    let mut block_sub = bc.new_block_with_tx_channel().subscribe().await;
-    let mut logs_sub = bc.new_block_logs_channel().subscribe().await;
-    let mut state_update_sub = bc.new_block_state_update_channel().subscribe().await;
+    let mut header_sub = bc.new_block_headers_channel().subscribe();
+    let mut block_sub = bc.new_block_with_tx_channel().subscribe();
+    let mut logs_sub = bc.new_block_logs_channel().subscribe();
+    let mut state_update_sub = bc.new_block_state_update_channel().subscribe();
 
     //let memepool = bc.mempool();
     let market = bc.market();
@@ -151,7 +151,7 @@ async fn main() -> Result<()> {
                                     ..SwapComposeData::default()
                                 });
 
-                            if let Err(e) = compose_channel.send(tx_compose_encode_msg).await {
+                            if let Err(e) = compose_channel.send(tx_compose_encode_msg) {
                                 error!("compose_channel.send : {}", e)
                             }else{
                                 debug!("compose_channel.send ok");
