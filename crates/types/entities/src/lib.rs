@@ -24,6 +24,7 @@ pub use swap_path::{SwapPath, SwapPaths};
 pub use swap_path_builder::build_swap_path_vec;
 pub use swap_step::SwapStep;
 pub use token::{Token, TokenWrapper};
+pub use pool_config::PoolsLoadingConfig;
 
 mod block_history;
 mod latest_block;

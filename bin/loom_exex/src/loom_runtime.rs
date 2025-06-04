@@ -4,7 +4,7 @@ use alloy::providers::Provider;
 use axum::Router;
 use eyre::{ErrReport, OptionExt};
 use loom::core::blockchain::{Blockchain, BlockchainState, Strategy};
-use loom::types::entities::PoolsLoadingConfig;
+use loom_types_entities::pool_config::PoolsLoadingConfig;
 use loom::core::blockchain_actors::BlockchainActors;
 use loom::core::topology::{BroadcasterConfig, EncoderConfig, TopologyConfig};
 use loom::evm::db::DatabaseLoomExt;

@@ -10,6 +10,7 @@ exclude.workspace = true
 
 [dependencies]
 loom = { workspace = true, features = ["full", "strategy-full"] }
+loom-types-entities = { workspace = true }
 
 axum.workspace = true
 clap.workspace = true
