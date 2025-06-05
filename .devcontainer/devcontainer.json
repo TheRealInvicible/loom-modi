@@ -1,9 +1,10 @@
 {
   "name": "Rust Dev Container with Protobuf",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev-container",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "postCreateCommand": "cargo install cargo-watch",
+  "forwardPorts": [5432, 8086],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -13,3 +14,5 @@
     }
   }
 }
+
+

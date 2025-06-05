@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  dev-container:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspaces:cached
+    depends_on:
+      - db
+      - influxdb
+    command: sleep infinity  # Keeps it running if nothing else starts
+
+  db:
+    image: postgres:latest
+    container_name: pg-loom
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: loom
+      POSTGRES_PASSWORD: loom
+      POSTGRES_DB: loom
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: influx-loom
+    restart: always
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdata:/var/lib/influxdb
+
+volumes:
+  pgdata:
+  influxdata:
