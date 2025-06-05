@@ -1,0 +1,15 @@
+{
+  "name": "Rust Dev Container with Protobuf",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "cargo install cargo-watch",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb"
+      ]
+    }
+  }
+}
