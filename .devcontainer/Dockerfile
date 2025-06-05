@@ -13,5 +13,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     protobuf-compiler \
     pkg-config \
+    llvm-dev \
+    libclang-dev \
+    clang \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
