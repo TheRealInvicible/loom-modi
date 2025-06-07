@@ -29,6 +29,7 @@ tracing.workspace = true
 
 # alloy
 alloy.workspace = true
+dotenvy = "0.15.7"
 
 [features]
 debug-calculation = []

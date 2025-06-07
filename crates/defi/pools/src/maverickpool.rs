@@ -456,6 +456,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_pool() -> Result<()> {
+        dotenvy::dotenv().ok();
+
         let _ = env_logger::try_init_from_env(env_logger::Env::default().default_filter_or("info,defi_pools=off"));
 
         let node_url = env::var("MAINNET_WS")?;

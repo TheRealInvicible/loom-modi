@@ -515,6 +515,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_pool() {
+        dotenvy::dotenv().ok();
         let _ = env_logger::try_init_from_env(EnvLog::default().default_filter_or("info"));
         let node_url = env::var("MAINNET_WS").unwrap();
 

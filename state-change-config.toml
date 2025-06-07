@@ -1,0 +1,19 @@
+[node]
+mode = "ws"
+
+[clients]
+remote = { url = "wss://multi-alpha-wind.quiknode.pro/78fdc18097732c16f30f063b39fb0479f59ccdfe/", transport = "ws", node = "geth" }
+
+[blockchains]
+mainnet = { chain_id = 1, start_block = 22645629 }
+
+[actors]
+[actors.node]
+mainnet_node = { client = "remote", bc = "mainnet" }
+
+[actors.pools]
+mainnet = { client = "remote", bc = "mainnet", history = true, new = true, protocol = true }
+
+# Configure specific pool addresses to monitor
+[pools]
+pancake_v3_usdc_usdt = "0x04c8577958ccc170eb3d2cca76f9d51bc6e42d8f"
