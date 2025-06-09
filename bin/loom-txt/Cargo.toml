@@ -20,3 +20,5 @@ dotenv = "0.15"
 
 alloy.workspace = true
 alloy-primitives.workspace = true
+loom-defi-address-book.workspace = true
+loom-core-actors.workspace = true

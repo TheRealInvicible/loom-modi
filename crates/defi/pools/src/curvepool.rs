@@ -610,6 +610,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_pool() -> Result<()> {
+        dotenvy::dotenv().ok();
         let _ = env_logger::try_init_from_env(EnvLog::default().default_filter_or("info,alloy_rpc_client=off"));
 
         let node_url = std::env::var("MAINNET_WS")?;

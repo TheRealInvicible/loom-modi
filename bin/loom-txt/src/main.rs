@@ -13,6 +13,7 @@ use loom::strategy::backrun::{BackrunConfig, BackrunConfigSection, StateChangeAr
 use loom::strategy::merger::{ArbSwapPathMergerActor, DiffPathMergerActor, SamePathMergerActor};
 use loom::types::entities::strategy_config::load_from_file;
 use loom::types::events::MarketEvents;
+use crate::preloader::preload_pools;
 
 
 #[tokio::main]

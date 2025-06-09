@@ -3301,6 +3301,7 @@ dependencies = [
  "alloy-transport",
  "clap",
  "colored",
+ "dotenvy",
  "env_logger",
  "eyre",
  "loom-core-actors",
@@ -5709,6 +5710,8 @@ dependencies = [
  "eyre",
  "futures",
  "loom 0.6.0",
+ "loom-core-actors",
+ "loom-defi-address-book",
  "tokio",
  "tracing",
 ]

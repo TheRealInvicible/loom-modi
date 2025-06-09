@@ -489,6 +489,7 @@ mod test {
 
     #[tokio::test]
     async fn test_calculate_in_amount() -> Result<()> {
+        dotenvy::dotenv().ok();
         // Verify that the calculated in amount is the same as the contract's in amount
         let block_number = 20935488u64;
 

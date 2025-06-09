@@ -544,6 +544,7 @@ mod test {
 
     #[tokio::test]
     async fn test_pool_tokens() -> Result<()> {
+        dotenvy::dotenv().ok();
         let node_url = env::var("MAINNET_WS")?;
         let client = AnvilDebugProviderFactory::from_node_on_block(node_url, BlockNumber::from(BLOCK_NUMBER)).await?;
 
@@ -605,6 +606,7 @@ mod test {
 
     #[tokio::test]
     async fn test_calculate_out_amount() -> Result<()> {
+        dotenvy::dotenv().ok();
         // Verify that the calculated out amount is the same as the contract's out amount
         let node_url = env::var("MAINNET_WS")?;
         let client = AnvilDebugProviderFactory::from_node_on_block(node_url, BlockNumber::from(BLOCK_NUMBER)).await?;
@@ -666,6 +668,7 @@ mod test {
 
     #[tokio::test]
     async fn test_calculate_in_amount() -> Result<()> {
+        dotenvy::dotenv().ok();
         // Verify that the calculated out amount is the same as the contract's out amount
         let node_url = env::var("MAINNET_WS")?;
         let client = AnvilDebugProviderFactory::from_node_on_block(node_url, BlockNumber::from(BLOCK_NUMBER)).await?;
@@ -727,6 +730,7 @@ mod test {
 
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_calculate_in_amount_with_ext_db() -> Result<()> {
+        dotenvy::dotenv().ok();
         // Verify that the calculated out amount is the same as the contract's out amount
         let node_url = env::var("MAINNET_WS")?;
         let client = AnvilDebugProviderFactory::from_node_on_block(node_url, BlockNumber::from(BLOCK_NUMBER)).await?;
