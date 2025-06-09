@@ -12,8 +12,6 @@ use loom::metrics::InfluxDbWriterActor;
 use loom::strategy::backrun::{BackrunConfig, BackrunConfigSection, StateChangeArbActor};
 use loom::strategy::merger::{ArbSwapPathMergerActor, DiffPathMergerActor, SamePathMergerActor};
 use loom::types::entities::strategy_config::load_from_file;
-use loom::types::events::MarketEvents;
-use crate::preloader::preload_pools;
 
 
 #[tokio::main]
@@ -26,7 +24,7 @@ async fn main() -> Result<()> {
     .format_timestamp_micros()
     .init();
 
-    let topology_config = TopologyConfig::load_from_file("config.toml".to_string())?;
+    let topology_config = TopologyConfig::load_from_file("statechangeconfig.toml".to_string())?;
     let influxdb_config = topology_config.influxdb.clone();
 
     let encoder = MulticallerSwapEncoder::default();
@@ -47,7 +45,7 @@ async fn main() -> Result<()> {
 
     let tx_signers = topology.get_signers(Some("env_signer".to_string()).as_ref())?;
 
-    let backrun_config: BackrunConfigSection = load_from_file("./config.toml".to_string().into()).await?;
+    let backrun_config: BackrunConfigSection = load_from_file("./statechangeconfig.toml".to_string().into()).await?;
     let backrun_config: BackrunConfig = backrun_config.backrun_strategy;
 
     let block_nr = client.get_block_number().await?;
@@ -245,22 +243,8 @@ async fn main() -> Result<()> {
             worker_task_vec = remaining_futures;
         }
     });
+    Ok(())
 
-    // listening to MarketEvents in an infinite loop
-    let mut s = blockchain.market_events_channel().subscribe();
-    loop {
-        let msg = s.recv().await;
-        if let Ok(msg) = msg {
-            match msg {
-                MarketEvents::BlockTxUpdate { block_number, block_hash } => {
-                    info!("New block received {} {}", block_number, block_hash);
-                }
-                MarketEvents::BlockStateUpdate { block_hash } => {
-                    info!("New block state received {}", block_hash);
-                }
-                _ => {}
-            }
-        }
-    }
+    // listening to MarketEvents in an infinite lo
 }
 
