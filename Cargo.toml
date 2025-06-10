@@ -10,6 +10,7 @@ default-members = [
     "bin/replayer",
     "bin/loom-txt",
     "bin/state-change",
+    "bin/reservetest",
 ]
 members = [
     "bin/exex_grpc_loom",
@@ -22,6 +23,7 @@ members = [
     "bin/loom_exex",
     "bin/nodebench",
     "bin/replayer", 
+    "bin/reservetest", 
     "bin/state-change",
     "crates/broadcast/accounts",
     "crates/broadcast/broadcaster",

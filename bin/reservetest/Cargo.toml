@@ -1,0 +1,19 @@
+[package]
+name = "reservetest"
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+loom = { workspace = true, features = ["full-json-rpc", "strategy-full"] }
+tokio.workspace = true
+dotenv = "0.15.0"
+alloy-rpc-types.workspace = true
+alloy-provider.workspace = true
+alloy.workspace = true
+loom-defi-abi.workspace = true
+loom-node-debug-provider.workspace = true

@@ -7526,6 +7526,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "reservetest"
+version = "0.6.0"
+dependencies = [
+ "alloy",
+ "alloy-provider",
+ "alloy-rpc-types",
+ "dotenv",
+ "loom 0.6.0",
+ "loom-defi-abi",
+ "loom-node-debug-provider",
+ "tokio",
+]
+
+[[package]]
 name = "resolv-conf"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
